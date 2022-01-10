@@ -70,7 +70,7 @@ while is_running:
 
                         selected_vocabulary = master_vocabulary_list[selected_vocabulary_index]
                         print('\n**** ENTRY ****')
-                        print(selected_vocabulary)
+                        print(f'{selected_vocabulary_index}: {selected_vocabulary}')
 
                         # selected_vocabulary_duplicates
                         for index, line in enumerate(master_vocabulary_list):
@@ -85,7 +85,7 @@ while is_running:
                             [vocabulary, vocabulary_type, pos, hanja, level, meaning, english1, english2] = entry
                             if korean_regex(vocabulary).startswith(korean_regex(selected_vocabulary[2])) and selected_vocabulary[3] in pos:
                                 target_definition_indexes.append(index)
-                                print(f'{index}: {[vocabulary, pos, hanja, english1, english2]}')
+                                print(f'{index}: {[vocabulary, pos, hanja, level, english1, english2]}')
 
                         definition_selection = determine_conversion(input(f'\nHow would you like to define {selected_vocabulary[2]}? (Type index, X to "Cancel", or Q to "Quit") '))
 
