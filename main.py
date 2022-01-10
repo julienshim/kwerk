@@ -155,7 +155,7 @@ dt_string = now.strftime("%Y-%d-%m_%H.%M.%S")
 
 print('CREATING BACKUP...')
 
-with open(f'./backup/korean_nav_vocabulary_list{dt_string}.tsv', 'w') as output:
+with open(f'./backup/korean_nav_vocabulary_list_{dt_string}.tsv', 'w') as output:
     tsv_writer = writer(output, delimiter='\t')
     for line in master_vocabulary_list:
         tsv_writer.writerow(line)
