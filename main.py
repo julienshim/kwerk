@@ -87,10 +87,10 @@ while is_running:
                                 target_definition_indexes.append(index)
                                 print(f'{index}: {[vocabulary, pos, hanja, level, english1, english2]}')
 
-                        definition_selection = determine_conversion(input(f'\nHow would you like to define {selected_vocabulary[2]}? (Type index, X to "Cancel", or Q to "Quit") '))
+                        definition_selection = determine_conversion(input(f'\nHow would you like to define {selected_vocabulary[2]}? (Type index, M to Manually input, X to "Cancel", or Q to "Quit") '))
 
-                        while definition_selection not in target_definition_indexes and definition_selection not in ['x', 'X', 'q', 'Q']:
-                            definition_selection = determine_conversion(input (f'Selection not in range. How would you like to define {selected_vocabulary[2]}? (Type index, X to "Cancel", or Q to "Quit") '))
+                        while definition_selection not in target_definition_indexes and definition_selection not in ['m', 'M', 'x', 'X', 'q', 'Q']:
+                            definition_selection = determine_conversion(input (f'Selection not in range. How would you like to define {selected_vocabulary[2]}? (Type index, M to Manually input, X to "Cancel", or Q to "Quit") '))
 
                         if definition_selection in target_definition_indexes:
                             [day, frequency, korean, pos, hanja, english, english2, hint, level, percentage] = master_vocabulary_list[selected_vocabulary_index]
@@ -112,6 +112,31 @@ while is_running:
                             if confirmation_input.lower() in ['y', 'yes']:
                                 print('SAVING CHANGES...')
                                 master_vocabulary_list[selected_vocabulary_index] = [day, frequency, korean, pos, hanja, english_c, english2_c, hint, level, 'TRUE']
+                                print('WRITING CHANGES...')
+                                with open('./korean_nav_vocabulary_list.tsv', 'w') as output:
+                                    tsv_writer = writer(output, delimiter='\t')
+                                    for line in master_vocabulary_list:
+                                        tsv_writer.writerow(line)
+                                print(f'SAVED: {master_vocabulary_list[selected_vocabulary_index]}')
+                                is_defining = False
+
+                        elif definition_selection in ['m', 'M']:
+                            manual_input_primary = input(f'What is the primary definition of {selected_vocabulary[2]}? ')
+                            manual_input_secondary = input(f'What is the secondary definition of {selected_vocabulary[2]}? ')
+
+                            [day, frequency, korean, pos, hanja, english, english2, hint, level, percentage] = master_vocabulary_list[selected_vocabulary_index]
+        
+                            print(f'\nBEFORE: {[frequency, korean, pos, hanja, english, english2, hint, level]}')
+                            print(f'AFTER: {[frequency, korean, pos, hanja, manual_input_primary, manual_input_secondary, hint, level]}')
+
+                            confirmation_input = input('\nWould you like to make the above changes? (Y/N) ')
+                            
+                            while confirmation_input.lower() not in ['y', 'yes', 'n', 'no']:
+                                confirmation_input = input('Sorry, didn\'t get your selection. Would you like to make the above changes? (Y/N) ')
+                            
+                            if confirmation_input.lower() in ['y', 'yes']:
+                                print('SAVING CHANGES...')
+                                master_vocabulary_list[selected_vocabulary_index] = [day, frequency, korean, pos, hanja, manual_input_primary, manual_input_secondary, hint, level, 'TRUE']
                                 print('WRITING CHANGES...')
                                 with open('./korean_nav_vocabulary_list.tsv', 'w') as output:
                                     tsv_writer = writer(output, delimiter='\t')
